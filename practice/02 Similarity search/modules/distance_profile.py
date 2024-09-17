@@ -19,12 +19,18 @@ def brute_force(ts: np.ndarray, query: np.ndarray, is_normalize: bool = True) ->
     dist_profile: distance profile between query and time series
     """
 
+    if is_normalize:
+        ts = z_normalize(ts)
+        query = z_normalize(query)
+    
     n = len(ts)
     m = len(query)
-    N = n-m+1
+    N = n - m + 1
 
     dist_profile = np.zeros(shape=(N,))
 
-    # INSERT YOUR CODE
-
+    for i in range(N):
+        subseq = ts[i:i+m]
+        dist_profile[i] = ED_distance(subseq, query) if not is_normalize else norm_ED_distance(subseq, query)
+    
     return dist_profile
